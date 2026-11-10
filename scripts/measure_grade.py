@@ -5,6 +5,8 @@ Usage:
   python -I measure_grade.py frame.png --patch counter:40,60,200,220 --skin 100,1450,1000,1920
 
 Levels: luma at the 0.5, 50 and 99.5 percentiles, and the share of pixels at 250 or above.
+Chroma: how saturated the frame is, as the 50, 95 and 99.5 percentiles of hypot(Cb, Cr).
+There is no fixed target. Run it on the source frame and the graded frame and compare.
 Patches: mean RGB and the cast. On a neutral surface R, G and B should sit within about 3.
 Skin: median luma, hue and chroma of skin-like pixels in the region.
 Hue is atan2(Cr, Cb) in degrees. The vectorscope skin line sits at about 123.
@@ -37,6 +39,12 @@ def main():
         f"levels Y p0.5 {np.percentile(y, 0.5):.1f}  p50 {np.percentile(y, 50):.1f}  "
         f"p99.5 {np.percentile(y, 99.5):.1f}  at 250+ {(img.max(2) >= 250).mean() * 100:.2f}%"
     )
+    _, cb, cr = yuv(img)
+    chroma = np.hypot(cb, cr)
+    print(
+        f"chroma  p50 {np.percentile(chroma, 50):.1f}  p95 {np.percentile(chroma, 95):.1f}  "
+        f"p99.5 {np.percentile(chroma, 99.5):.1f}  (compare before and after: a grade should not move p95 far)"
+    )
     for item in a.patch:
         name, coords = item.split(":")
         x0, y0, x1, y1 = box(coords)
@@ -52,7 +60,7 @@ def main():
             print(f"skin {coords}: too few skin pixels")
             continue
         print(
-            f"skin {coords}: {mask.sum()} px  Y p50 {np.median(yy[mask]):.0f}  "
+            f"skin {coords}: {mask.sum()} px  Y p50 {np.median(yy[mask]):.0f} ({np.median(yy[mask]) / 2.55:.0f}%)  "
             f"hue p50 {np.median(hue[mask]):.1f}  chroma p50 {np.median(chroma[mask]):.1f}"
         )
 
