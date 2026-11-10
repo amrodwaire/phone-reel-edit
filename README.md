@@ -23,3 +23,6 @@ Copy the folder into your skills directory, for example `~/.claude/skills/phone-
 
 ## Notes
 Every rule comes from a real product reel that went wrong at that step first. `references/research.md` explains why each rule exists and lists the sources. The Resolve coordinates are for one screen layout; take a screenshot before trusting them.
+
+## License
+MIT. See `LICENSE`.
