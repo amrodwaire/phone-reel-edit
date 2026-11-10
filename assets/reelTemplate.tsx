@@ -51,7 +51,7 @@ export const TEXT: Record<"one" | "two" | "three" | "end", TextBlock> = {
   one: {
     top: 1190,
     lines: [
-      { text: "سؤال يشدّ من أول ثانية", size: 86, color: ACCENT, instant: true },
+      { text: "سؤال يشدّ من أول ثانية", size: 66, color: ACCENT, instant: true },
       { text: "والجواب هون", size: 100, at: 48 },
     ],
   },
@@ -67,7 +67,7 @@ export const TEXT: Record<"one" | "two" | "three" | "end", TextBlock> = {
     top: 224,
     lines: [
       { text: "هاد اللي بتشوفوه", size: 88, color: ACCENT, at: 6 },
-      { text: "وفي غيره كمان", size: 78, at: 54 },
+      { text: "وفي غيره كمان", size: 78, at: 54, mt: 14 },
       { text: "خيار · خيار", size: 62, at: 102 },
       { text: "خيار · خيار", size: 62, at: 102 },
     ],
@@ -76,8 +76,8 @@ export const TEXT: Record<"one" | "two" | "three" | "end", TextBlock> = {
     top: 1000,
     ink: true,
     lines: [
-      { text: "«كلام الزبونة", size: 72, at: 3, lh: 1.42 },
-      { text: "زي ما كتبته»", size: 72, at: 3, lh: 1.42 },
+      { text: "«كلام الزبونة", size: 72, at: 3, lh: 1.5 },
+      { text: "زي ما كتبته»", size: 72, at: 3, lh: 1.5 },
       { text: "تعليق زبونة", size: 42, at: 3, color: "#A8761A", lh: 1.5, mt: 24 },
       { text: "للطلب: ع الخاص أو واتساب", size: 46, at: 48, lh: 1.45, mt: 12 },
       { text: "07X XXX XXXX", size: 98, at: 48, lh: 1.2, ltr: true },
@@ -85,7 +85,9 @@ export const TEXT: Record<"one" | "two" | "three" | "end", TextBlock> = {
   },
 };
 
-const PROBE = ["#ff0000", "#00ff00", "#0000ff", "#ffff00", "#ff00ff", "#00ffff"];
+// check_text.py tells lines apart by these colours, so a block holds seven lines at most.
+// Split a longer block into two blocks, each with its own probe frame.
+const PROBE = ["#ff0000", "#00ff00", "#0000ff", "#ffff00", "#ff00ff", "#00ffff", "#ffffff"];
 
 const Line: React.FC<{ line: TextLine; ink?: boolean; probe?: string }> = ({ line, ink, probe }) => {
   const f = useCurrentFrame();

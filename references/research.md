@@ -49,6 +49,20 @@ Verify a reviewer model every time. On the test reel it:
 
 It was right about shortening the pace, about not grading one shot globally, about matching two neighbouring shots, and about moving the contact line up.
 
+## Checks added after the first release
+Measured or run on this machine, not taken from the web:
+- Limiter ceiling. Three tracks mastered to -14 LUFS at ceilings 0.70, 0.75 and 0.80 gave true peaks from -3.5 to -1.7 dBTP after AAC. The overshoot depends on the track more than on the ceiling, so `master.sh` now measures its own output. An earlier note that one ceiling "reached -0.6 dB" could not be reproduced on these tracks.
+- `grade.py` round trip. An identity LUT through the full chain, encoded at CRF 12, gave PSNR 44.6 dB on luma against the source, so the chain itself adds no visible shift. A neutral patch balanced to a target of 180 measured 178 to 179 on all three channels.
+- Text contrast. On the published test reel, accent-colour lines scored 3.2 to 4.6 and white lines 4.9 to 16 against the picture around them. The client read all of them, so the 3.0 limit sits just under what is known to work.
+- The template. Its sample text failed its own check in three places when rendered in a new project. The sizes and line boxes were corrected until it passed.
+- ffmpeg treats untagged video as bt601. Phone clips are bt709, so an untagged clip measured or graded without stating the matrix shows shifted colours. `grade.py` states it.
+
+From the web, third-party sources only:
+- Skin brightness: guides give 40-70% on the waveform as a wide rule of thumb, some 65-75% for light skin. All call it scene dependent.
+- Sharpen last. Denoise before sharpening, or the sharpening makes noise that the denoiser no longer removes. Sources split on denoising before or after the grade.
+- Resolve exports a grade as a 17, 33 or 65 point cube. Windows and other local tools are not in the LUT.
+- Safe zones and cover crop: see `other-cases.md`.
+
 ## Sources
 - https://davinciresolveclub.com/how-to-color-grade-davinci-resolve/
 - https://davinciresolveclub.com/davinci-resolve-instagram-reels-export-settings/
@@ -57,3 +71,12 @@ It was right about shortening the pace, about not grading one shot globally, abo
 - https://photography.tutsplus.com/tutorials/how-to-read-scopes-in-resolve-waveform-parade-histogram-vectorscope--cms-41868
 - https://www.hopperhq.com/blog/instagram-reel-size/
 - https://tryuncle.com/learn/davinci-resolve/how-to-speed-ramp-in-davinci-resolve
+- https://reap.video/blog/short-form-video-safe-zones
+- https://www.admakeai.com/blog/vertical-video-dimensions-2026
+- https://adaptlypost.com/blog/social-media-safe-zones-2026-complete-guide
+- https://postfa.st/blog/instagram-reel-cover-size-safe-zones
+- https://www.tella.com/blog/export-cube-lut-from-davinci-resolve
+- https://photography.tutsplus.com/tutorials/how-to-make-a-custom-lut-from-your-grade-in-resolve--cms-106805
+- https://pixflow.net/blog/read-video-scopes-fast/
+- https://ffmpeg-cookbook.pages.dev/en/articles/hdr-to-sdr/
+- https://noamkroll.com/the-best-order-of-operations-for-color-grading-why-it-makes-all-the-difference/
